@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AccountAPI/AccountAPI.csproj" />
+  <Project Path="PortfolioAPI/PortfolioAPI.csproj" />
+</Solution>
