@@ -23,9 +23,15 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# Binary files
+*.dll
+*.pdb
+*.exe
+
 # .NET Core
 project.lock.json
 project.fragment.lock.json
+project.assets.json
 artifacts/
 
 # ASP.NET Scaffolding
@@ -52,3 +58,15 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# IDE-specific files
+.vs/
+.vscode/
+*.user
+.idea/
+
+# Copilot instructions
+.github/copilot-instructions.md
+AccountAPI/bin/Debug/net10.0/AccountAPI.dll
+AccountAPI/bin/Debug/net10.0/AccountAPI.exe
+AccountAPI/bin/Debug/net10.0/AccountAPI.pdb
