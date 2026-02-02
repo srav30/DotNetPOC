@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AccountAPI.Models;
-using AccountAPI.Repositories;
+using AccountAPI.Services;
 
 namespace AccountAPI.Controllers;
 
@@ -8,38 +8,31 @@ namespace AccountAPI.Controllers;
 [Route("api/[controller]")]
 public class AccountsController : ControllerBase
 {
-    private readonly IAccountRepository _accountRepository;
+    private readonly IAccountService _accountService;
     private readonly ILogger<AccountsController> _logger;
 
-    public AccountsController(IAccountRepository accountRepository, ILogger<AccountsController> logger)
+    public AccountsController(IAccountService accountService, ILogger<AccountsController> logger)
     {
-        _accountRepository = accountRepository;
+        _accountService = accountService;
         _logger = logger;
     }
 
     [HttpGet("{clientId}")]
     public async Task<ActionResult<Account>> GetAccount(int clientId)
     {
-        var account = await _accountRepository.GetAccountByClientIdAsync(clientId);
+        var account = await _accountService.GetAccountAsync(clientId);
         if (account == null)
             return NotFound($"Account not found for client {clientId}");
         return Ok(account);
     }
 
-    [HttpPost("verify-funds")]
-    public async Task<ActionResult<bool>> VerifyFunds([FromBody] FundVerificationRequest request)
-    {
-        var hasFunds = await _accountRepository.VerifyFundsAsync(request.ClientId, request.RequiredAmount);
-        return Ok(hasFunds);
-    }
-
     [HttpPost("withdraw")]
     public async Task<ActionResult<Account>> Withdraw([FromBody] WithdrawalRequest request)
     {
-        var account = await _accountRepository.WithdrawAsync(request.ClientId, request.Amount);
+        var account = await _accountService.WithdrawAsync(request.ClientId, request.Amount);
         if (account == null)
         {
-            var existingAccount = await _accountRepository.GetAccountByClientIdAsync(request.ClientId);
+            var existingAccount = await _accountService.GetAccountAsync(request.ClientId);
             if (existingAccount == null)
                 return NotFound($"Account not found for client {request.ClientId}");
             
@@ -51,27 +44,10 @@ public class AccountsController : ControllerBase
     [HttpPost("deposit")]
     public async Task<ActionResult<Account>> Deposit([FromBody] DepositRequest request)
     {
-        var account = await _accountRepository.DepositAsync(request.ClientId, request.Amount);
+        var account = await _accountService.DepositAsync(request.ClientId, request.Amount);
         if (account == null)
             return NotFound($"Account not found for client {request.ClientId}");
         return Ok(account);
+
     }
-}
-
-public class FundVerificationRequest
-{
-    public int ClientId { get; set; }
-    public decimal RequiredAmount { get; set; }
-}
-
-public class WithdrawalRequest
-{
-    public int ClientId { get; set; }
-    public decimal Amount { get; set; }
-}
-
-public class DepositRequest
-{
-    public int ClientId { get; set; }
-    public decimal Amount { get; set; }
 }

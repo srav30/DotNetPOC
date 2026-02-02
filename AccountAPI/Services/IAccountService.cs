@@ -1,10 +1,10 @@
 using AccountAPI.Models;
 
-namespace AccountAPI.Repositories;
+namespace AccountAPI.Services;
 
-public interface IAccountRepository
+public interface IAccountService
 {
-    Task<Account?> GetAccountByClientIdAsync(int clientId);
+    Task<Account?> GetAccountAsync(int clientId);
     Task<Account?> WithdrawAsync(int clientId, decimal amount);
     Task<Account?> DepositAsync(int clientId, decimal amount);
 }

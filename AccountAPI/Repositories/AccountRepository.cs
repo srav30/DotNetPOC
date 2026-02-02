@@ -46,20 +46,6 @@ public class AccountRepository : IAccountRepository
         }
     }
 
-    public async Task<bool> VerifyFundsAsync(int clientId, decimal requiredAmount)
-    {
-        try
-        {
-            var account = await GetAccountByClientIdAsync(clientId);
-            return account != null && account.Balance >= requiredAmount;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error verifying funds for client {ClientId}", clientId);
-            throw;
-        }
-    }
-
     public async Task<Account?> WithdrawAsync(int clientId, decimal amount)
     {
         try
