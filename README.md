@@ -1,4 +1,4 @@
-# LPL Financial POC - Portfolio & Account Services
+# DotNetPOC - Portfolio & Account Services
 
 Two interconnected .NET 10.0 Web APIs demonstrating microservices architecture.
 
