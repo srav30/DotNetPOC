@@ -50,4 +50,11 @@ public class AccountsController : ControllerBase
         return Ok(account);
 
     }
+
+    [HttpPost("verify-funds")]
+   public async Task<ActionResult<bool>> VerifyFunds([FromBody] FundVerificationRequest request)
+   {
+      var hasFunds = await _accountService.VerifyFundsAsync(request.ClientId, request.RequiredAmount);
+      return Ok(hasFunds);
+   }
 }

@@ -28,4 +28,13 @@ public class AccountService : IAccountService
     {
         return await _accountRepository.DepositAsync(clientId, amount);
     }
+
+    public async Task<bool> VerifyFundsAsync(int clientId, decimal requiredAmount)
+{
+    var account = await _accountRepository.GetAccountByClientIdAsync(clientId);
+    if (account == null)
+        return false;
+    
+    return account.Balance >= requiredAmount;
+}
 }
