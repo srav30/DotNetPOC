@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AccountAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccountAPI.Controllers;
 
@@ -16,6 +17,7 @@ public class AccountFileController : ControllerBase
         _logger = logger;
     }
 
+    [Authorize]
     [HttpGet("{clientId}/statement")]
     public async Task<IActionResult> GenerateAccountStatement(int clientId)
     {
